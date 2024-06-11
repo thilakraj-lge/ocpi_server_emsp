@@ -1,8 +1,4 @@
-FROM maven:3.6.3-openjdk-17 AS build
-COPY . .
-RUN mvn clean package -DskipTest
-
-FROM maven:3.8.1-openjdk-17-slim
-COPY --from=build /target/demo-0.0.1-SNAPSHOT.jar demo.jar
-EXPOSE 8080
-ENTRYPOINT ["java","-jar","demo.jar"]
+FROM openjdk:17
+LABEL maintainer ="howtodoinjava"
+ADD target/springDocker-0.0.1-SNAPSHOT.jar springDocker-0.0.1-SNAPSHOT.jar
+ENTRYPOINT ["java","-jar","springDocker-0.0.1-SNAPSHOT.jar"]

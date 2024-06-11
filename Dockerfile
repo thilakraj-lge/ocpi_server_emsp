@@ -1,14 +1,15 @@
-FROM maven:3.8.4-openjdk-17 as maven-builder
-COPY src /app/src
-COPY pom.xml /app
+#
+# Build stage
+#
+FROM maven:3.8.4-openjdk-17 AS build
+COPY . .
+RUN mvn clean package -DskipTests
 
-RUN mvn -f /app/pom.xml clean package -DskipTests
-FROM openjdk:17-alpine
-
-RUN "ls"
-
-COPY --from=maven-builder target/*.jar /app-service/godelivery.jar
-WORKDIR /app-service
-
+#
+# Package stage
+#
+FROM openjdk:17-jdk-slim
+COPY --from=build /target/demo-0.0.1-SNAPSHOT.jar demo.jar
+# ENV PORT=8080
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","godelivery.jar"]
+ENTRYPOINT ["java","-jar","demo.jar"]

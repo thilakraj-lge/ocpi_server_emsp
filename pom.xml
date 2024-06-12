@@ -130,6 +130,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>emsp-server</finalName>
 	</build>
 
 </project>
